@@ -1,0 +1,14 @@
+<p-card>
+  <h2>{{title}} Login</h2>
+  <form class="flex flex-col gap-5" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-2">
+      <label for="emailOrRoll">{{field}}</label>
+      <input id="emailOrRoll" [style]="{'width':'100%'}" pInputText formControlName="emailOrRoll" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="password">Password</label>
+      <p-password [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" formControlName="password" toggleMask></p-password>
+    </div>
+    <p-button [loading]="loading" label="Login" type="submit" [disabled]="loginForm.invalid"></p-button>
+  </form>
+</p-card>

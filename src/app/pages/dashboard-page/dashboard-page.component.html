@@ -1,0 +1,148 @@
+<div class="flex w-full justify-center">
+  <div class="flex flex-col w-full gap-5">
+    <p-card class="flex" styleClass="w-full m-0">
+      <h2>User Information</h2>
+      <div class="card-content">
+        <p *ngIf="user_role !== 'Admin'">Name: {{ user_name }}</p>
+        <p *ngIf="user_role === 'Student'">Roll: {{ student_roll }}</p>
+        <p *ngIf="user_role !== 'Student'">Email: {{ email }}</p>
+        <p>Role: {{ user_role }}</p>
+      </div>
+      <p-button styleClass="bg-rose-500" (onClick)="logout()">Logout</p-button>
+    </p-card>
+
+    <!-- for admins only -->
+    <!-- render teachers -->
+    <div *ngIf="user_role == 'Admin'" class="flex flex-col gap-5">
+      <p-card class="flex" styleClass="w-full m-0">
+        <div class="flex justify-between">
+          <h2>Teachers</h2>
+          <p-button styleClass="bg-blue-500" (onClick)="addTeacher(0)">Add Teacher</p-button>
+        </div>
+        <div class="card-content">
+          <table class="w-full text-center border-collapse border border-gray-400">
+            <thead>
+              <tr>
+                <th class="border border-gray-400">SL. No</th>
+                <th class="border border-gray-400">Name</th>
+                <th class="border border-gray-400">Email</th>
+                <th class="border border-gray-400">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let teacher of teachers; let i = index">
+                <td class="border border-gray-400">{{ i + 1 }}</td>
+                <td class="border border-gray-400">{{ teacher.teacher_name }}</td>
+                <td class="border border-gray-400">{{ teacher.teacher_email }}</td>
+                <td class="flex gap-4 justify-center">
+                  <app-teacher-info-dialog #teacherDialog [teacher]="teacher" ></app-teacher-info-dialog>
+                  <p-button icon="pi pi-pencil" size="small" [outlined]="true" severity="info" (onClick)="editTeacher(i)" />
+                  <p-button icon="pi pi-times" size="small" [outlined]="true" severity="danger" (onClick)="deleteTeacher()" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </p-card>
+      <!-- render students -->
+      <p-card class="flex" styleClass="w-full m-0">
+        <div class="flex justify-between">
+          <h2>Students</h2>
+          <p-button styleClass="bg-blue-500" (onClick)="addStudent(0)">Add Student</p-button>
+        </div>
+        <div class="card-content">
+          <table class="w-full text-center border-collapse border border-gray-400">
+            <thead>
+              <tr>
+                <th class="border border-gray-400">SL. No</th>
+                <th class="border border-gray-400">Name</th>
+                <th class="border border-gray-400">Roll</th>
+                <th class="border border-gray-400">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of students; let i = index">
+                <td class="border border-gray-400">{{ i + 1 }}</td>
+                <td class="border border-gray-400">{{ student.name }}</td>
+                <td class="border border-gray-400">{{ student.student_roll }}</td>
+                <td class="flex gap-4 justify-center">
+                  <app-student-info-dialog #studentDialog [student]="student"></app-student-info-dialog>
+                  <p-button icon="pi pi-pencil" size="small" [outlined]="true" severity="info" (onClick)="editStudent(i)" />
+                  <p-button icon="pi pi-times" size="small" [outlined]="true" severity="danger" (onClick)="deleteStudent()" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </p-card>
+    </div>
+    <!-- render departments -->
+    <p-card class="flex" styleClass="w-full m-0">
+      <h2>Departments</h2>
+      <div class="card-content">
+        <table class="w-full text-center border-collapse border border-gray-400">
+          <thead>
+            <tr>
+              <th class="border border-gray-400">SL. No</th>
+              <th class="border border-gray-400">Department Name</th>
+              <th class="border border-gray-400">Department Short Name</th>
+              <th class="border border-gray-400">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let department of departments; let i = index">
+              <td class="border border-gray-400">{{ i + 1 }}</td>
+              <td class="border border-gray-400">{{ department.dept_name }}</td>
+              <td class="border border-gray-400">{{ department.dept_short_name }}</td>
+              <td class="flex gap-4 justify-center">
+                <p-button icon="pi pi-pencil" size="small" [outlined]="true" severity="info" (onClick)="editDepartment()" />
+                <p-button icon="pi pi-times" size="small" [outlined]="true" severity="danger" (onClick)="deleteDepartment()" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </p-card>
+
+    <!-- render courses -->
+    <p-card class="flex" styleClass="w-full m-0">
+      <h2>Courses</h2>
+      <div class="card-content">
+        <table class="w-full text-center border-collapse border border-gray-400">
+          <thead>
+            <tr>
+              <th class="border border-gray-400">SL. No</th>
+              <th class="border border-gray-400">Course Name</th>
+              <th class="border border-gray-400">Course Code</th>
+              <th class="border border-gray-400">Credit</th>
+              <th class="border border-gray-400">Department</th>
+              <th class="border border-gray-400">Assigned Teacher</th>
+              <th class="border border-gray-400">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let course of courses; let i = index">
+              <td class="border border-gray-400">{{ i + 1 }}</td>
+              <td class="border border-gray-400">{{ course.course_name }}</td>
+              <td class="border border-gray-400">{{ course.course_code }}</td>
+              <td class="border border-gray-400">{{ course.course_credit }}</td>
+              <td class="border border-gray-400">{{ course.department_id }}</td>
+              <td class="border border-gray-400">{{ course.teacher_id }}</td>
+              <td class="flex gap-4 justify-center">
+                <p-button icon="pi pi-pencil" size="small" [outlined]="true" severity="info" (onClick)="editCourse()" />
+                <p-button icon="pi pi-times" size="small" [outlined]="true" severity="danger" (onClick)="deleteCourse()" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </p-card>
+
+    <!-- for students only -->
+    <div *ngIf="user_role == 'Student'">
+      <div *ngFor="let ct of ct_info">
+        <app-ct-info [CT_Info]="ct"></app-ct-info>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="flex justify-center">
+    <div class="flex flex-col justify-center">
+        <p-tabView class="flex max-w-sm justify-center w-full">
+            <p-tabPanel *ngFor="let tab of tabs" [header]="tab.title">
+                <app-signup [title]="tab.title"></app-signup>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>
